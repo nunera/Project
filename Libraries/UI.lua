@@ -36,43 +36,62 @@ local CreateTween = function(name, speed, style, direction, loop, reverse, delay
 end
 
 -- / Dragging
-local drag = function(obj, latency)
-    obj = obj
-    latency = latency or 0.06
+local function smoothDrag(gui)
+    local dragging = false
+    local dragStart
+    local startPos
+    local targetPos
 
-    toggled = nil
-    input = nil
-    start = nil
-
-    function updateInput(input)
-        local Delta = input.Position - start
-        local Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + Delta.X, startPos.Y.Scale, startPos.Y.Offset + Delta.Y)
-        TweenService:Create(obj, TweenInfo.new(latency), {Position = Position}):Play()
+    local function lerp(a, b, t)
+        return a + (b - a) * t
     end
 
-    obj.InputBegan:Connect(function(inp)
-        if (inp.UserInputType == Enum.UserInputType.MouseButton1) then
-            toggled = true
-            start = inp.Position
-            startPos = obj.Position
-            inp.Changed:Connect(function()
-                if (inp.UserInputState == Enum.UserInputState.End) then
-                    toggled = false
+    local function update()
+        if not targetPos then return end
+        
+        -- Use lerp to smooth the movement
+        local smoothness = 0.1 -- Adjust this value for more or less smoothness
+        gui.Position = UDim2.new(
+            lerp(gui.Position.X.Scale, targetPos.X.Scale, smoothness),
+            lerp(gui.Position.X.Offset, targetPos.X.Offset, smoothness),
+            lerp(gui.Position.Y.Scale, targetPos.Y.Scale, smoothness),
+            lerp(gui.Position.Y.Offset, targetPos.Y.Offset, smoothness)
+        )
+        
+        -- Stop updating if the position is close enough to the target
+        if (gui.Position.X.Offset - targetPos.X.Offset)^2 + (gui.Position.Y.Offset - targetPos.Y.Offset)^2 < 1 then
+            targetPos = nil
+        end
+    end
+
+    gui.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+            dragging = true
+            dragStart = UserInputService:GetMouseLocation()
+            startPos = gui.Position
+
+            input.Changed:Connect(function()
+                if input.UserInputState == Enum.UserInputState.End then
+                    dragging = false
                 end
             end)
         end
     end)
 
-    obj.InputChanged:Connect(function(inp)
-        if (inp.UserInputType == Enum.UserInputType.MouseMovement) then
-            input = inp
+    gui.InputChanged:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+            dragInput = input
         end
     end)
 
-    UserInputService.InputChanged:Connect(function(inp)
-        if (inp == input and toggled) then
-            updateInput(inp)
+    RunService.RenderStepped:Connect(function()
+        if dragging then
+            local mousePos = UserInputService:GetMouseLocation()
+            local delta = mousePos - dragStart
+            targetPos = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
         end
+        
+        update()
     end)
 end
 
@@ -885,7 +904,7 @@ function library:Init(key)
     edge.Position = UDim2.new(0.5, 0, 0.5, 0)
     edge.Size = UDim2.new(0, 594, 0, 406)
 
-    drag(edge, 0.04)
+    smoothDrag(edge)
     local CanChangeVisibility = true
     UserInputService.InputBegan:Connect(function(input)
         if CanChangeVisibility and input.KeyCode == key then
