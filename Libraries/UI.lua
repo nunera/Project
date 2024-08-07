@@ -419,6 +419,7 @@ do
                 end
 
                 if drawing.Class == 'Square' or drawing.Class == 'Image' then
+                    print(parentSize)
                     drawing.Object.Size = typeof(drawing.Size) == 'Vector2' and drawing.Size or typeof(drawing.Size) == 'UDim2' and utility:UDim2ToVector2(drawing.Size,parentSize)
                 end
 
