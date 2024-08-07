@@ -96,7 +96,7 @@ local function smoothDrag(gui)
 end
 
 local library = {
-    version = "2.0.2",
+    version = "ALPHA 0.0.1",
     title = title or "xsx " .. tostring(math.random(1,366)),
     fps = 0,
     rank = "private"
