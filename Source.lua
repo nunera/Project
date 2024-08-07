@@ -2,6 +2,7 @@ local library = loadstring(game:HttpGet("https://github.com/nunera/Project/raw/m
 
 
 library.rank = "User"
+library.title = "Project"
 
 local Wm = library:Watermark("Project | v" .. library.version ..  " | " .. library:GetUsername() .. " | rank: " .. library.rank)
 local FpsWm = Wm:AddWatermark("fps: " .. library.fps)
@@ -12,6 +13,9 @@ coroutine.wrap(function()
     end
 end)()
 
+local function keybind(keycode)
+    Notif:Notify("The keybind to toggle Project is ..
+end
 
 local Notif = library:InitNotifications()
 
