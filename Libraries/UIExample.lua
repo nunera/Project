@@ -1,8 +1,8 @@
 local library = loadstring(game:HttpGet("https://github.com/nunera/Project/raw/main/Libraries/UI.lua"))()
 
 
-library.rank = "User"
-local Wm = library:Watermark("Project | v" .. library.version ..  " | " .. library:GetUsername() .. " | rank: " .. library.rank)
+library.rank = "developer"
+local Wm = library:Watermark("xsx example | v" .. library.version ..  " | " .. library:GetUsername() .. " | rank: " .. library.rank)
 local FpsWm = Wm:AddWatermark("fps: " .. library.fps)
 coroutine.wrap(function()
     while wait(.75) do
@@ -13,19 +13,15 @@ end)()
 
 local Notif = library:InitNotifications()
 
-for i = 10,0,-1 do 
+for i = 20,0,-1 do 
     task.wait(0.05)
-    Notif:Notify("Loading Project v".. library.version.. ".", 3, "information") -- notification, alert, error, success, information
+    local LoadingXSX = Notif:Notify("Loading xsx lib v2, please be patient.", 3, "information") -- notification, alert, error, success, information
 end 
 
-task.wait(0.75)
-
-Notif:Notify("Project has finished loading!", 5, "success")
-
-library.title = "Project"
+library.title = "Vigil"
 
 library:Introduction()
-task.wait(1)
+wait(1)
 local Init = library:Init()
 
 local Tab1 = Init:NewTab("Example tab")
