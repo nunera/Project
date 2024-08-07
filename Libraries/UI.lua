@@ -5070,7 +5070,7 @@ local GameName = game:GetService("MarketplaceService"):GetProductInfo(game.Place
             Visible = page.open
         }, section.visibleContent)
         --
-        local listbox_scroll_outline = utility:Create("Frame", {Vector2.new(listbox_gradient.Size.X - 4, 0), listbox_gradient}, {
+        local listbox_scroll_outline = utility:Create("Frame", {Vector2.new(30 - 4, 0), listbox_gradient}, {
             Size = utility:Size(0, 4, 1, 0, listbox_gradient),
             Position = utility:Position(1, -4, 0, 0, listbox_gradient),
             Color = theme.outline,
