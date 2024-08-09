@@ -14,7 +14,7 @@ coroutine.wrap(function()
 end)()
 
 local function keybind(keycode)
-    Notif:Notify("The keybind to toggle Project is ..
+    Notif:Notify("The keybind to toggle Project is" .. keycode)
 end
 
 local Notif = library:InitNotifications()
