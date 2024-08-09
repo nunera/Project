@@ -4,7 +4,7 @@ local library = loadstring(game:HttpGet("https://github.com/nunera/Project/raw/m
 library.rank = "User"
 library.title = "Project"
 
-local Wm = library:Watermark("Project | v" .. library.version ..  " | " .. library:GetUsername() .. " | rank: " .. library.rank)
+local Wm = library:Watermark("Project | v" .. library.version ..  " | " .. library:GetUsername() .. " | Executor: " .. getexecutorname())
 local FpsWm = Wm:AddWatermark("fps: " .. library.fps)
 
 coroutine.wrap(function()
